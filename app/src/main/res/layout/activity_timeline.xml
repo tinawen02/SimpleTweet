@@ -19,7 +19,8 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Logout"
+        android:text="LOG OUT"
+        android:onClick="onLogoutButton"
         app:layout_constraintEnd_toEndOf="@+id/rvTweets"
         app:layout_constraintTop_toTopOf="@+id/rvTweets" />
 </androidx.constraintlayout.widget.ConstraintLayout>
