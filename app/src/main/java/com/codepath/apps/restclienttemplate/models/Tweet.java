@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate.models;
 
 import android.content.Entity;
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +21,7 @@ public class Tweet {
     public String body;
     public String createdAt;
     public User user;
+    public String imageUrl;
     public String relativeTime;
 
     // Empty constructor needed by the Parcler Library
@@ -31,19 +33,31 @@ public class Tweet {
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
 
-        // Entity
+        // For entity
         if(jsonObject.has("full_text")) {
             tweet.body = jsonObject.getString("full_text");
         } else {
             tweet.body = jsonObject.getString("text");
         }
 
-        //tweet.body = jsonObject.getString("text");
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.relativeTime = getRelativeTimeAgo(jsonObject.getString("created_at"));
+        JSONObject entities = jsonObject.getJSONObject("entities");
 
-
+        // Initialize the imageUrl
+        tweet.imageUrl = "";
+        if (entities.has("media")) {
+            JSONArray mediaArray = entities.getJSONArray("media");
+            if (mediaArray.length() != 0) {
+                JSONObject mediaObject = mediaArray.getJSONObject(0);
+                Log.i("Tweet", mediaObject.toString());
+                if (mediaObject.getString("type").equals("photo")) {
+                    tweet.imageUrl = mediaObject.getString("media_url_https");
+                    Log.i("Tweet", tweet.imageUrl);
+                }
+            }
+        }
 
         return tweet;
     }
