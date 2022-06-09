@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +17,17 @@ import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import org.w3c.dom.Text;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
 
     Context context;
     List<Tweet> tweets;
+
+
     // Pass in context and list of tweets
     public TweetsAdapter(Context context, List<Tweet> tweets) {
         this.context = context;
@@ -44,6 +50,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
         //Bind the tweet with view holder
         holder.bind(tweet);
+
     }
 
     @Override
@@ -58,6 +65,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvBody;
         TextView tvScreenName;
         ImageView ivTweetImage;
+        TextView tvRelativeTime;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -65,11 +73,16 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvBody = itemView.findViewById(R.id.tvBody);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             ivTweetImage = itemView.findViewById(R.id.ivTweetImage);
+            tvRelativeTime = itemView.findViewById(R.id.tvRelativeTime);
+
         }
 
         public void bind(Tweet tweet) {
             tvBody.setText(tweet.body);
             tvScreenName.setText(tweet.user.screenName);
+
+            // Sets the time stamp
+            tvRelativeTime.setText(tweet.relativeTime);
             Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
 
             if (!((tweet.imageUrl).equals(""))) {
@@ -95,5 +108,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         tweets.addAll(list);
         notifyDataSetChanged();
     }
+
+
 
 }

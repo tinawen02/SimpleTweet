@@ -11,7 +11,7 @@ The following **required** functionality is completed:
 * [X]	User can **sign in to Twitter** using OAuth login
 * [X]	User can **view tweets from their home timeline**
 * [X] User is displayed the username, name, and body for each tweet
-* [ ] User is displayed the [relative timestamp](https://gist.github.com/nesquena/f786232f5ef72f6e10a7) for each tweet "8m", "7h"
+* [X] User is displayed the [relative timestamp](https://gist.github.com/nesquena/f786232f5ef72f6e10a7) for each tweet "8m", "7h"
 * [X] User can **compose and post a new tweet**
     * [X] User can click a “Compose” icon in the Action Bar on the top right
     * [X] User can then enter a new tweet and post this to Twitter
@@ -19,7 +19,7 @@ The following **required** functionality is completed:
     * [X] Newly created tweet should be manually inserted into the timeline and not rely on a full refresh
 * [X] User can **see a counter with total number of characters left for tweet** on compose tweet page
 * [X] User can **pull down to refresh tweets timeline**
-* [ ] User can **see embedded image media within a tweet** on list or detail view.
+* [X] User can **see embedded image media within a tweet** on list or detail view.
 
 The following **optional** features are implemented:
 

@@ -24,6 +24,7 @@ public class Tweet {
     public String imageUrl;
     public String relativeTime;
 
+
     // Empty constructor needed by the Parcler Library
     public Tweet() {
 
@@ -88,4 +89,6 @@ public class Tweet {
 
         return relativeDate;
     }
+
+
 }
