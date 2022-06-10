@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
@@ -86,15 +87,25 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
         public void bind(Tweet tweet) {
             tvBody.setText(tweet.body);
-            tvScreenName.setText(tweet.user.screenName);
+            tvScreenName.setText("@" + tweet.user.screenName);
             tvFavoriteCount.setText(String.valueOf(tweet.favoriteCount));
+
+            // Used to address bug when user can continuously like
+            if (tweet.isFavorited) {
+                Drawable newImage = context.getDrawable(android.R.drawable.btn_star_big_on);
+                ibFavorite.setImageDrawable(newImage);
+            } else {
+                Drawable newImage = context.getDrawable(android.R.drawable.btn_star_big_off);
+                ibFavorite.setImageDrawable(newImage);
+            }
+
 
             // Sets the time stamp
             tvRelativeTime.setText(tweet.relativeTime);
-            Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
+            Glide.with(context).load(tweet.user.profileImageUrl).transform(new RoundedCorners(150)).into(ivProfileImage);
 
             if (!((tweet.imageUrl).equals(""))) {
-                Glide.with(context).load(tweet.imageUrl).into(ivTweetImage);
+                Glide.with(context).load(tweet.imageUrl).transform(new RoundedCorners(50)).into(ivTweetImage);
                 ivTweetImage.setVisibility(View.VISIBLE);
             } else {
                 ivTweetImage.setVisibility(View.GONE);
