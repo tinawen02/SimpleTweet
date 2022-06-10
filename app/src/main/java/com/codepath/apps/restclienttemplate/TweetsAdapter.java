@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -19,6 +20,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
+import org.parceler.Parcels;
 import org.w3c.dom.Text;
 
 import java.text.ParseException;
@@ -99,13 +101,24 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 ibFavorite.setImageDrawable(newImage);
             }
 
+            tvBody.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, TweetDetailActivity.class);
+                    // serialize the movie using parceler, use its short name as a key
+                    intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+                    // show the activity
+                    context.startActivity(intent);
+                }
+            });
+
 
             // Sets the time stamp
             tvRelativeTime.setText(tweet.relativeTime);
             Glide.with(context).load(tweet.user.profileImageUrl).transform(new RoundedCorners(150)).into(ivProfileImage);
 
             if (!((tweet.imageUrl).equals(""))) {
-                Glide.with(context).load(tweet.imageUrl).transform(new RoundedCorners(50)).into(ivTweetImage);
+                Glide.with(context).load(tweet.imageUrl).transform(new RoundedCorners(30)).into(ivTweetImage);
                 ivTweetImage.setVisibility(View.VISIBLE);
             } else {
                 ivTweetImage.setVisibility(View.GONE);
@@ -141,7 +154,17 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     } else {
                         // Else if tweet is already favorited
                         // Tell Twitter I want to unfavorite this
+                        TwitterApp.getRestClient(context).unfavorite(tweet.id, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) {
 
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+
+                            }
+                        });
 
                         // Change the drawable back to btn_star_big_off
                         tweet.isFavorited = false;
