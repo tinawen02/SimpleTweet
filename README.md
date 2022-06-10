@@ -48,7 +48,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='Simple-Tweet-GIF.gif' />
+<img src='Simple-Tweet-Final.gif' />
 
 GIF created with [Kap](https://getkap.co/).
 

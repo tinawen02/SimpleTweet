@@ -58,6 +58,7 @@ public class TweetDetailActivity extends AppCompatActivity {
         tvBody.setText(tweet.body);
         tvScreenName.setText("@" + tweet.user.screenName);
         tvFavoriteCount.setText(String.valueOf(tweet.favoriteCount));
+        tvRelativeTime.setText(tweet.getRelativeTimeAgo(tweet.createdAt));
 
         // Sets the profile image
         Glide.with(this).load(tweet.user.profileImageUrl)
