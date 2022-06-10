@@ -86,9 +86,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
 
             if (!((tweet.imageUrl).equals(""))) {
-                Log.i("TweetsAdapter", "image " + tweet.imageUrl);
-                Log.i("TweetsAdapter", "tweet body " + tweet.body);
-
                 Glide.with(context).load(tweet.imageUrl).into(ivTweetImage);
                 ivTweetImage.setVisibility(View.VISIBLE);
             } else {

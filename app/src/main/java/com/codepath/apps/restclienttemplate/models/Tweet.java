@@ -52,10 +52,8 @@ public class Tweet {
             JSONArray mediaArray = entities.getJSONArray("media");
             if (mediaArray.length() != 0) {
                 JSONObject mediaObject = mediaArray.getJSONObject(0);
-                Log.i("Tweet", mediaObject.toString());
                 if (mediaObject.getString("type").equals("photo")) {
                     tweet.imageUrl = mediaObject.getString("media_url_https");
-                    Log.i("Tweet", tweet.imageUrl);
                 }
             }
         }
