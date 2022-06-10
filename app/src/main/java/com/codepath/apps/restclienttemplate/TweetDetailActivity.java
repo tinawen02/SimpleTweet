@@ -47,7 +47,7 @@ public class TweetDetailActivity extends AppCompatActivity {
         ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
         ivTweetImage = (ImageView) findViewById(R.id.ivTweetImage);
         tvRelativeTime = (TextView) findViewById(R.id.tvRelativeTime);
-        ibFavorite = (ImageButton) findViewById(R.id.ibFavorite);
+        ibFavorite = (ImageButton) findViewById(R.id.ibFavorite2);
         tvFavoriteCount = (TextView) findViewById(R.id.tvFavoriteCount);
 
 
@@ -64,9 +64,64 @@ public class TweetDetailActivity extends AppCompatActivity {
                 .transform(new RoundedCorners(300))
                 .into(ivProfileImage);
 
+        // Sets the embedded image
         Glide.with(this).load(tweet.imageUrl)
                 .transform(new RoundedCorners(30))
                 .into(ivTweetImage);
 
+        // Allows the user to click on the favorite button
+        ibFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // If tweet is not already favorited
+                if(!tweet.isFavorited) {
+                    // Tell Twitter I want to favorite this
+                    TwitterApp.getRestClient(context).favorite(tweet.id, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Headers headers, JSON json) {
+
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+
+                        }
+                    });
+
+                    // Change the drawable to btn_star_big_on
+                    tweet.isFavorited = true;
+                    Drawable newImage = TweetDetailActivity.this.getResources().getDrawable(android.R.drawable.btn_star_big_on);//context.getDrawable(android.R.drawable.btn_star_big_on);
+
+                    ibFavorite.setImageDrawable(newImage);
+
+                    // Increment the text inside tvFavoriteText
+                    tweet.favoriteCount++;
+                    tvFavoriteCount.setText(String.valueOf(tweet.favoriteCount));
+                } else {
+                    // Else if tweet is already favorited
+                    // Tell Twitter I want to unfavorite this
+                    TwitterApp.getRestClient(context).unfavorite(tweet.id, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Headers headers, JSON json) {
+
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+
+                        }
+                    });
+
+                    // Change the drawable back to btn_star_big_off
+                    tweet.isFavorited = false;
+                    Drawable newImage = TweetDetailActivity.this.getResources().getDrawable(android.R.drawable.btn_star_big_off);//context.getDrawable(android.R.drawable.btn_star_big_off);
+                    ibFavorite.setImageDrawable(newImage);
+
+                    // Decrement the text inside tvFavoriteCount
+                    tweet.favoriteCount--;
+                    tvFavoriteCount.setText(String.valueOf(tweet.favoriteCount));
+                }
+            }
+        });
     }
 }
