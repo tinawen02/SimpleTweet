@@ -83,9 +83,13 @@ public class TimelineActivity extends AppCompatActivity {
                 loadNext();
             }
         };
+        // Adds the scroll listener to RecyclerView
+        rvTweets.addOnScrollListener(scrollListener);
+
     }
 
     private void loadNext() {
+        populateHomeTimeline(tweets.get(tweets.size() - 1).tweetID);
     }
 
     private void populateHomeTimeline(String maxScrolling) {

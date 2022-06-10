@@ -20,19 +20,27 @@ public class Tweet {
 
     public String body;
     public String createdAt;
-    public User user;
     public String imageUrl;
     public String relativeTime;
+    public String id;
+    public String tweetID;
+    public User user;
+    public boolean isFavorited;
+    public boolean isRetweeted;
+    public int favoriteCount;
+    public int retweetedCount;
 
 
     // Empty constructor needed by the Parcler Library
-    public Tweet() {
-
-    }
+    public Tweet() {}
 
     // turn it into a java tweet object
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
+
+        if(jsonObject.has("retweeted_status")) {
+            return null;
+        }
 
         // For entity
         if(jsonObject.has("full_text")) {
@@ -44,6 +52,11 @@ public class Tweet {
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.relativeTime = getRelativeTimeAgo(jsonObject.getString("created_at"));
+        tweet.isFavorited = jsonObject.getBoolean("favorited");
+        tweet.isRetweeted = jsonObject.getBoolean("retweeted");
+        tweet.id = jsonObject.getString("id");
+        tweet.favoriteCount = jsonObject.getInt("favorite_count");
+        tweet.retweetedCount = jsonObject.getInt("retweet_count");
         JSONObject entities = jsonObject.getJSONObject("entities");
 
         // Initialize the imageUrl
@@ -65,7 +78,12 @@ public class Tweet {
     public static List<Tweet> fromJsonArray(JSONArray jsonArray) throws JSONException {
         List<Tweet> tweets = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
-            tweets.add(fromJson(jsonArray.getJSONObject(i)));
+            Tweet newTweet = fromJson(jsonArray.getJSONObject(i));
+
+            // Ensures that we are not adding a null tweet to the home feed
+            if(newTweet != null) {
+                tweets.add(newTweet);
+            }
         }
         return tweets;
     }
